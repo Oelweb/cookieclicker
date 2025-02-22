@@ -95,10 +95,23 @@
             padding: 10px;
             font-size: 18px;
         }
+        /* Shop button always at top left */
+        .shop-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            cursor: pointer;
+            width: 50px;
+            height: 50px;
+        }
     </style>
 </head>
 <body>
     <p id="score" class="score-container">Cookies: 0</p>
+    
+    <!-- Shop button always visible in top left -->
+    <img id="shopToggle" class="shop-button" src="shop-image.png" alt="Shop">
+
     <div class="game-container">
         <h1>Cookie Clicker</h1>
         <img id="cookie" class="cookie" src="cookie-icon.png" alt="Cookie">
@@ -274,4 +287,3 @@
     </script>
 </body>
 </html>
-
