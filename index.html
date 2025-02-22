@@ -108,12 +108,10 @@
     
     <div id="shop" class="shop-modal">
         <h2>Shop</h2>
-        <!-- Neue Shop Items -->
         <button class="shop-item" id="autoClicker">Auto-Clicker (10 Cookies)</button>
         <button class="shop-item" id="doubleClick">Doppelte Cookies (50 Cookies)</button>
         <button class="shop-item" id="goldenCookie">Goldener Keks (200 Cookies)</button>
         <button class="shop-item" id="megaClick">Mega-Klick (500 Cookies)</button>
-
         <!-- 30 zusätzliche Shop Items -->
         <button class="shop-item" id="clickMultiplier">Klick Multiplikator (100 Cookies)</button>
         <button class="shop-item" id="cookieStorm">Keks-Sturm (250 Cookies)</button>
@@ -135,7 +133,6 @@
         <button class="shop-item" id="cookieResearch">Keks Forschung (2500 Cookies)</button>
         <button class="shop-item" id="megaBoost">Mega Boost (3000 Cookies)</button>
         <button class="shop-item" id="cookieRobot">Cookie Roboter (3500 Cookies)</button>
-        <!-- Weitere 10 Shop-Items -->
         <button class="shop-item" id="doubleCookies">Doppelte Cookies (600 Cookies)</button>
         <button class="shop-item" id="timeAccelerator">Zeit Beschleuniger (700 Cookies)</button>
         <button class="shop-item" id="cookiePrinter">Cookie Drucker (800 Cookies)</button>
@@ -146,7 +143,6 @@
         <button class="shop-item" id="cookieRocket">Cookie Rakete (6000 Cookies)</button>
         <button class="shop-item" id="megaClicker">Mega Klicker (4000 Cookies)</button>
         <button class="shop-item" id="hyperClick">Hyper Klick (10000 Cookies)</button>
-
         <button class="shop-item close-shop" id="closeShop">Schließen</button>
     </div>
 
@@ -158,9 +154,7 @@
         let autoClickerActive = false;
         let doubleClickActive = false;
         let clickMultiplier = 1;
-        let isDragging = false;
-        let lastX, lastY;
-        let clickSpeed = 100;
+        let shopVisible = false;
 
         // Get elements
         const cookie = document.getElementById("cookie");
@@ -175,7 +169,7 @@
         const clickSound = document.getElementById("clickSound");
         const purchaseSound = document.getElementById("purchaseSound");
 
-        // 30 neue Shop-Items
+        // Shop Items und Aktionen
         const shopItems = [
             { element: autoClicker, cost: 10, action: () => { autoClickerActive = true; startAutoClicker(); } },
             { element: doubleClick, cost: 50, action: () => { doubleClickActive = true; clickMultiplier = 2; } },
@@ -213,7 +207,40 @@
             { element: hyperClick, cost: 10000, action: () => { /* Hyper Click Logic */ } }
         ];
 
-        // Event-Listener für jedes Shop-Item hinzufügen
+        // Funktion zum Starten des Auto-Clickers
+        function startAutoClicker() {
+            setInterval(() => {
+                if (autoClickerActive) {
+                    score += 1 * clickMultiplier;
+                    updateScore();
+                }
+            }, 1000);
+        }
+
+        // Klick auf den Cookie
+        cookie.addEventListener("click", () => {
+            score += 1 * clickMultiplier;
+            updateScore();
+            clickSound.play();
+        });
+
+        // Update der Anzeige
+        function updateScore() {
+            scoreDisplay.textContent = `Cookies: ${score}`;
+        }
+
+        // Shop einblenden/ausblenden
+        shopToggle.addEventListener("click", () => {
+            shopVisible = !shopVisible;
+            shop.style.display = shopVisible ? "block" : "none";
+        });
+
+        closeShop.addEventListener("click", () => {
+            shopVisible = false;
+            shop.style.display = "none";
+        });
+
+        // Event-Listener für Shop-Items
         shopItems.forEach(item => {
             item.element.addEventListener("click", () => {
                 if (score >= item.cost && !item.element.disabled) {
@@ -225,19 +252,6 @@
                 }
             });
         });
-
-        function startAutoClicker() {
-            setInterval(() => {
-                if (autoClickerActive) {
-                    score += 1;
-                    scoreDisplay.textContent = `Cookies: ${score}`;
-                }
-            }, 1000); 
-        }
-
-        function updateScore() {
-            scoreDisplay.textContent = `Cookies: ${score}`;
-        }
     </script>
 </body>
 </html>
