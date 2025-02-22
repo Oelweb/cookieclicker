@@ -146,6 +146,8 @@
     <div class="game-container">
         <h1>Cookie Clicker</h1>
         <img id="cookie" class="cookie" src="cookie-icon.png" alt="Cookie">
+        <!-- Button zum Handy-Layout wechseln -->
+        <button id="switchToMobile" class="button">Zum Handy-Layout wechseln</button>
     </div>
     
     <div id="shop" class="shop-modal">
@@ -164,7 +166,7 @@
         let autoClickerInterval = null;
         let cookieDoublingActive = false;
         let shopVisible = false;
-        let device = "";
+        let device = "PC";  // Standardmäßig auf PC eingestellt
 
         const cookie = document.getElementById("cookie");
         const scoreDisplay = document.getElementById("score");
@@ -174,24 +176,7 @@
         const shopItemsContainer = document.getElementById("shop-items");
         const clickSound = document.getElementById("clickSound");
         const purchaseSound = document.getElementById("purchaseSound");
-
-        // Gerät auswählen
-        function askDeviceType() {
-            const deviceChoice = prompt("Auf welchem Gerät spielst du? (PC/Handy/Tablet)");
-            if (deviceChoice.toLowerCase() === "pc") {
-                device = "PC";
-                document.body.style.fontSize = "18px"; // PC-Optimierung
-            } else if (deviceChoice.toLowerCase() === "handy") {
-                device = "Handy";
-                document.body.style.fontSize = "14px"; // Handy-Optimierung
-            } else if (deviceChoice.toLowerCase() === "tablet") {
-                device = "Tablet";
-                document.body.style.fontSize = "16px"; // Tablet-Optimierung
-            } else {
-                alert("Ungültige Auswahl. Standard auf PC gesetzt.");
-                device = "PC";
-            }
-        }
+        const switchToMobileButton = document.getElementById("switchToMobile");
 
         // Score aktualisieren
         function updateScore() {
@@ -225,6 +210,17 @@
             shop.style.display = "none";
         });
 
+        // Handy-Layout aktivieren
+        switchToMobileButton.addEventListener("click", () => {
+            document.body.style.fontSize = "14px"; // Mobil-Format optimiert
+            cookie.style.width = "150px";
+            cookie.style.height = "150px";
+            shopToggle.style.width = "40px";
+            shopToggle.style.height = "40px";
+            shop.style.width = "85%";
+            switchToMobileButton.disabled = true; // Schaltfläche deaktivieren
+        });
+
         // Shop-Artikel
         const shopItems = [
             { id: "autoClicker", cost: 50, label: "Auto-Klicker (50 Cookies)", effect: () => { if (!autoClickerActive) { autoClickerActive = true; autoClickerInterval = setInterval(() => { score += 1 * clickMultiplier; updateScore(); }, 1000); } } },
@@ -237,21 +233,7 @@
             { id: "cookieDoubling4", cost: 8000, label: "Cookie-Doppler 4x (8000 Cookies)", effect: () => { if (!cookieDoublingActive) { cookieDoublingActive = true; setTimeout(() => { cookieDoublingActive = false; }, 20000); } } },
             { id: "autoClicker5", cost: 16000, label: "Auto-Klicker 5x (16000 Cookies)", effect: () => { if (autoClickerActive) { clickMultiplier = 5; } } },
             { id: "cookieDoubling5", cost: 32000, label: "Cookie-Doppler 5x (32000 Cookies)", effect: () => { if (!cookieDoublingActive) { cookieDoublingActive = true; setTimeout(() => { cookieDoublingActive = false; }, 25000); } } },
-            // Weitere Items bis zu 50 hinzufügen
-            { id: "superClicker", cost: 50000, label: "Super-Klicker (50000 Cookies)", effect: () => { clickMultiplier += 5; } },
-            { id: "megaClicker", cost: 100000, label: "Mega-Klicker (100000 Cookies)", effect: () => { clickMultiplier += 10; } },
-            { id: "ultraClicker", cost: 250000, label: "Ultra-Klicker (250000 Cookies)", effect: () => { clickMultiplier += 20; } },
-            { id: "autoClicker6", cost: 500000, label: "Auto-Klicker 6x (500000 Cookies)", effect: () => { if (autoClickerActive) { clickMultiplier = 6; } } },
-            { id: "cookieDoubling6", cost: 1000000, label: "Cookie-Doppler 6x (1000000 Cookies)", effect: () => { if (!cookieDoublingActive) { cookieDoublingActive = true; setTimeout(() => { cookieDoublingActive = false; }, 30000); } } },
-            { id: "autoClicker7", cost: 2000000, label: "Auto-Klicker 7x (2000000 Cookies)", effect: () => { if (autoClickerActive) { clickMultiplier = 7; } } },
-            { id: "cookieDoubling7", cost: 5000000, label: "Cookie-Doppler 7x (5000000 Cookies)", effect: () => { if (!cookieDoublingActive) { cookieDoublingActive = true; setTimeout(() => { cookieDoublingActive = false; }, 35000); } } },
-            { id: "autoClicker8", cost: 10000000, label: "Auto-Klicker 8x (10000000 Cookies)", effect: () => { if (autoClickerActive) { clickMultiplier = 8; } } },
-            { id: "cookieDoubling8", cost: 20000000, label: "Cookie-Doppler 8x (20000000 Cookies)", effect: () => { if (!cookieDoublingActive) { cookieDoublingActive = true; setTimeout(() => { cookieDoublingActive = false; }, 40000); } } },
-            // Weitere 20 Items, um insgesamt 50 zu erreichen
-            { id: "autoClicker9", cost: 40000000, label: "Auto-Klicker 9x (40000000 Cookies)", effect: () => { if (autoClickerActive) { clickMultiplier = 9; } } },
-            { id: "cookieDoubling9", cost: 80000000, label: "Cookie-Doppler 9x (80000000 Cookies)", effect: () => { if (!cookieDoublingActive) { cookieDoublingActive = true; setTimeout(() => { cookieDoublingActive = false; }, 45000); } } },
-            { id: "autoClicker10", cost: 100000000, label: "Auto-Klicker 10x (100000000 Cookies)", effect: () => { if (autoClickerActive) { clickMultiplier = 10; } } },
-            { id: "cookieDoubling10", cost: 200000000, label: "Cookie-Doppler 10x (200000000 Cookies)", effect: () => { if (!cookieDoublingActive) { cookieDoublingActive = true; setTimeout(() => { cookieDoublingActive = false; }, 50000); } } },
+            // Weitere Items hinzufügen
         ];
 
         // Shop rendern
@@ -274,9 +256,8 @@
             });
         }
 
-        // Gerät auswählen und Shop rendern
-        askDeviceType();
         setInterval(renderShop, 1000);
     </script>
 </body>
 </html>
+
