@@ -16,6 +16,8 @@
             color: white;
             transition: background-color 0.5s, color 0.5s;
             position: relative;
+            margin: 0;
+            padding: 0;
         }
         .score-container {
             position: absolute;
@@ -39,7 +41,7 @@
             transform: scale(1.1);
         }
         .shop-button {
-            position: fixed;
+            position: absolute;
             top: 20px;
             left: 20px;
             cursor: pointer;
@@ -65,10 +67,14 @@
             padding: 30px;
             border-radius: 10px;
             text-align: center;
-            width: 500px;
+            width: 90%;
+            max-width: 600px;
             box-shadow: 0px 0px 15px rgba(255, 255, 255, 0.2);
-            overflow-y: auto;
-            max-height: 80vh;
+            overflow-y: scroll;
+            max-height: 80%;
+        }
+        .shop-modal h2 {
+            margin-bottom: 20px;
         }
         .shop-item {
             margin: 10px;
@@ -93,9 +99,25 @@
             margin-top: 20px;
             background: red;
         }
+        @media (max-width: 600px) {
+            .cookie {
+                width: 150px;
+                height: 150px;
+            }
+            .score-container {
+                font-size: 18px;
+            }
+            .shop-button {
+                width: 40px;
+                height: 40px;
+            }
+            .shop-modal {
+                width: 90%;
+            }
+        }
     </style>
 </head>
-<body>
+<body class="dark-mode">
     <p id="score" class="score-container">Cookies: 0</p>
     <img id="shopToggle" class="shop-button" src="shop-image.png" alt="Shop">
     <div class="game-container">
@@ -105,17 +127,19 @@
     
     <div id="shop" class="shop-modal">
         <h2>Shop</h2>
-        <button class="shop-item" id="autoClicker">Auto-Clicker (10 Cookies)</button>
+        <div id="shop-items"></div>
         <button class="shop-item close-shop" id="closeShop">Schließen</button>
     </div>
 
-    <audio id="clickSound" src="cookie-saund.mp3"></audio>
-    <audio id="purchaseSound" src="cookie-saund.mp3"></audio>
+    <audio id="clickSound" src="cookie-sound.mp3"></audio>
+    <audio id="purchaseSound" src="cookie-sound.mp3"></audio>
 
     <script>
         let score = 0;
         let autoClickerActive = false;
         let clickMultiplier = 1;
+        let autoClickerInterval = null;
+        let cookieDoublingActive = false;
         let shopVisible = false;
 
         const cookie = document.getElementById("cookie");
@@ -123,22 +147,12 @@
         const shopToggle = document.getElementById("shopToggle");
         const shop = document.getElementById("shop");
         const closeShop = document.getElementById("closeShop");
-        const autoClicker = document.getElementById("autoClicker");
+        const shopItemsContainer = document.getElementById("shop-items");
         const clickSound = document.getElementById("clickSound");
         const purchaseSound = document.getElementById("purchaseSound");
 
         function updateScore() {
             scoreDisplay.textContent = `Cookies: ${score}`;
-        }
-
-        function startAutoClicker() {
-            if (!autoClickerActive) {
-                autoClickerActive = true;
-                setInterval(() => {
-                    score += 1 * clickMultiplier;
-                    updateScore();
-                }, 1000);
-            }
         }
 
         cookie.addEventListener("click", () => {
@@ -157,15 +171,232 @@
             shop.style.display = "none";
         });
 
-        autoClicker.addEventListener("click", () => {
-            if (score >= 10 && !autoClickerActive) {
-                score -= 10;
-                updateScore();
-                startAutoClicker();
-                purchaseSound.play();
-                autoClicker.disabled = true;
+        // Shop Items Definition
+        const shopItems = [
+            {
+                id: "autoClicker",
+                cost: 500,
+                label: "Auto Clicker (500 Cookies)",
+                effect: () => {
+                    if (!autoClickerActive) {
+                        autoClickerActive = true;
+                        autoClickerInterval = setInterval(() => {
+                            score += 1 * clickMultiplier;
+                            updateScore();
+                        }, 1000);
+                    }
+                }
+            },
+            {
+                id: "clickMultiplier",
+                cost: 1000,
+                label: "Click Multiplier (1000 Cookies)",
+                effect: () => {
+                    clickMultiplier *= 2;
+                }
+            },
+            {
+                id: "cookieDoubling",
+                cost: 2000,
+                label: "Cookie Doubler (2000 Cookies)",
+                effect: () => {
+                    if (!cookieDoublingActive) {
+                        cookieDoublingActive = true;
+                        setTimeout(() => {
+                            cookieDoublingActive = false;
+                        }, 5000); // Doubles cookies for 5 seconds
+                    }
+                }
+            },
+            {
+                id: "extraCookies",
+                cost: 1000,
+                label: "Extra Cookies (1000 Cookies)",
+                effect: () => {
+                    score += 500; // Gives a one-time bonus of 500 cookies
+                    updateScore();
+                }
+            },
+            // Neue Items (20 neue Items + 10 zusätzliche)
+            {
+                id: "superClicker",
+                cost: 3000,
+                label: "Super Clicker (3000 Cookies)",
+                effect: () => {
+                    clickMultiplier *= 3;
+                }
+            },
+            {
+                id: "goldenCookie",
+                cost: 5000,
+                label: "Golden Cookie (5000 Cookies)",
+                effect: () => {
+                    score += 1000;
+                    updateScore();
+                }
+            },
+            {
+                id: "doubleClicker",
+                cost: 4000,
+                label: "Double Clicker (4000 Cookies)",
+                effect: () => {
+                    clickMultiplier *= 2;
+                }
+            },
+            {
+                id: "cookieFactory",
+                cost: 8000,
+                label: "Cookie Factory (8000 Cookies)",
+                effect: () => {
+                    setInterval(() => {
+                        score += 10;
+                        updateScore();
+                    }, 1000);
+                }
+            },
+            {
+                id: "cookieMachine",
+                cost: 12000,
+                label: "Cookie Machine (12000 Cookies)",
+                effect: () => {
+                    setInterval(() => {
+                        score += 20;
+                        updateScore();
+                    }, 1000);
+                }
+            },
+            {
+                id: "cookieStorm",
+                cost: 7000,
+                label: "Cookie Storm (7000 Cookies)",
+                effect: () => {
+                    setInterval(() => {
+                        score += 50;
+                        updateScore();
+                    }, 500);
+                }
+            },
+            {
+                id: "cookieMultiplier",
+                cost: 10000,
+                label: "Cookie Multiplier (10000 Cookies)",
+                effect: () => {
+                    clickMultiplier *= 5;
+                }
+            },
+            {
+                id: "cookieBoost",
+                cost: 15000,
+                label: "Cookie Boost (15000 Cookies)",
+                effect: () => {
+                    score += 3000;
+                    updateScore();
+                }
+            },
+            {
+                id: "megaCookies",
+                cost: 20000,
+                label: "Mega Cookies (20000 Cookies)",
+                effect: () => {
+                    score += 10000;
+                    updateScore();
+                }
+            },
+            {
+                id: "cookieGenerator",
+                cost: 25000,
+                label: "Cookie Generator (25000 Cookies)",
+                effect: () => {
+                    setInterval(() => {
+                        score += 500;
+                        updateScore();
+                    }, 1000);
+                }
+            },
+            {
+                id: "cookieSupernova",
+                cost: 30000,
+                label: "Cookie Supernova (30000 Cookies)",
+                effect: () => {
+                    score += 25000;
+                    updateScore();
+                }
+            },
+            {
+                id: "cookieWorld",
+                cost: 40000,
+                label: "Cookie World (40000 Cookies)",
+                effect: () => {
+                    score += 100000;
+                    updateScore();
+                }
+            },
+            {
+                id: "cookieMeteor",
+                cost: 45000,
+                label: "Cookie Meteor (45000 Cookies)",
+                effect: () => {
+                    score += 50000;
+                    updateScore();
+                }
+            },
+            {
+                id: "cookieMultiplier2",
+                cost: 50000,
+                label: "Cookie Multiplier II (50000 Cookies)",
+                effect: () => {
+                    clickMultiplier *= 15;
+                }
+            },
+            {
+                id: "cookieMachinePlus",
+                cost: 60000,
+                label: "Cookie Machine Plus (60000 Cookies)",
+                effect: () => {
+                    setInterval(() => {
+                        score += 1000;
+                        updateScore();
+                    }, 500);
+                }
+            },
+            {
+                id: "cookieEmpire",
+                cost: 70000,
+                label: "Cookie Empire (70000 Cookies)",
+                effect: () => {
+                    score += 100000;
+                    updateScore();
+                }
+            },
+            {
+                id: "cookieNebula",
+                cost: 80000,
+                label: "Cookie Nebula (80000 Cookies)",
+                effect: () => {
+                    score += 200000;
+                    updateScore();
+                }
             }
+        ];
+
+        // Shop Item buttons
+        shopItems.forEach(item => {
+            const button = document.createElement("button");
+            button.classList.add("shop-item");
+            button.id = item.id;
+            button.textContent = item.label;
+            button.addEventListener("click", () => {
+                if (score >= item.cost) {
+                    score -= item.cost;
+                    updateScore();
+                    item.effect();
+                    purchaseSound.play();
+                    button.disabled = true;
+                }
+            });
+            shopItemsContainer.appendChild(button);
         });
     </script>
 </body>
 </html>
+
