@@ -216,7 +216,7 @@
                         autoClickerInterval = setInterval(() => {
                             score += 1 * clickMultiplier;
                             updateScore();
-                        }, 2000);
+                        }, 2000); // Klickt alle 2 Sekunden
                     }
                 }
             },
@@ -290,15 +290,53 @@
                     }, 30000); // 30 Sekunden lang
                 }
             },
-            // Weiter 43 Items ...
-            ...Array.from({ length: 43 }, (_, index) => ({
-                id: `item${index + 7}`,
-                cost: (index + 7) * 100,  // Kostensteigerung
-                label: `Item ${index + 7} (${(index + 7) * 100} Cookies)`,
+            // Weitere Items
+            {
+                id: "superClick",
+                cost: 1200,
+                label: "Super Klick (1200 Cookies)",
                 effect: () => {
-                    alert(`Du hast Item ${index + 7} gekauft!`);
+                    clickMultiplier = 5;
+                    setTimeout(() => {
+                        clickMultiplier = 1;
+                    }, 15000); // 15 Sekunden lang
                 }
-            }))
+            },
+            {
+                id: "instantCookies",
+                cost: 1500,
+                label: "Instant Cookies (1500 Cookies)",
+                effect: () => {
+                    score += 500; // Sofortige Cookies hinzufügen
+                    updateScore();
+                }
+            },
+            {
+                id: "clickMultiplierBoost",
+                cost: 2000,
+                label: "Klick-Multiplikator Boost (2000 Cookies)",
+                effect: () => {
+                    clickMultiplier += 2;
+                    setTimeout(() => {
+                        clickMultiplier -= 2;
+                    }, 20000); // 20 Sekunden lang
+                }
+            },
+            {
+                id: "doubleAutoClicker",
+                cost: 2500,
+                label: "Doppelte Auto-Klicker (2500 Cookies)",
+                effect: () => {
+                    if (!autoClickerActive) {
+                        autoClickerActive = true;
+                        autoClickerInterval = setInterval(() => {
+                            score += 4 * clickMultiplier;
+                            updateScore();
+                        }, 800); // Sehr schnelle Auto-Klicker
+                    }
+                }
+            },
+            // Weitere Items hinzufügen ...
         ];
 
         function renderShop() {
