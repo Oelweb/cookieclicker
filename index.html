@@ -6,16 +6,14 @@
     <title>Cookie Clicker</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background-color: #222;
+            background-color: #333;
             color: white;
-            transition: background-color 0.5s, color 0.5s;
-            position: relative;
             margin: 0;
             padding: 0;
         }
@@ -43,10 +41,14 @@
         .shop-button {
             position: absolute;
             top: 20px;
-            left: 20px;
+            right: 20px;
             cursor: pointer;
             width: 50px;
             height: 50px;
+            transition: transform 0.3s ease-in-out;
+        }
+        .shop-button:hover {
+            transform: scale(1.1);
         }
         .cookie {
             width: 250px;
@@ -63,32 +65,35 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: #333;
+            background: #444;
             padding: 30px;
-            border-radius: 10px;
+            border-radius: 12px;
             text-align: center;
             width: 90%;
             max-width: 600px;
-            box-shadow: 0px 0px 15px rgba(255, 255, 255, 0.2);
+            box-shadow: 0px 0px 20px rgba(255, 255, 255, 0.2);
             overflow-y: scroll;
             max-height: 80%;
         }
         .shop-modal h2 {
             margin-bottom: 20px;
+            font-size: 28px;
+            color: #f5a623;
         }
         .shop-item {
-            margin: 10px;
-            padding: 12px;
+            margin: 10px 0;
+            padding: 15px;
             cursor: pointer;
             background: #555;
             color: white;
             border: none;
-            border-radius: 5px;
+            border-radius: 8px;
             width: 100%;
+            font-size: 18px;
             transition: background 0.3s, transform 0.2s;
         }
         .shop-item:hover {
-            background: #777;
+            background: #f5a623;
             transform: scale(1.05);
         }
         .shop-item:disabled {
@@ -97,7 +102,7 @@
         }
         .close-shop {
             margin-top: 20px;
-            background: red;
+            background: #e74c3c;
         }
         @media (max-width: 600px) {
             .cookie {
@@ -112,12 +117,12 @@
                 height: 40px;
             }
             .shop-modal {
-                width: 90%;
+                width: 85%;
             }
         }
     </style>
 </head>
-<body class="dark-mode">
+<body>
     <p id="score" class="score-container">Cookies: 0</p>
     <img id="shopToggle" class="shop-button" src="shop-image.png" alt="Shop">
     <div class="game-container">
@@ -171,12 +176,12 @@
             shop.style.display = "none";
         });
 
-        // Shop Items Definition
+        // Shop Items Definition with actions
         const shopItems = [
             {
                 id: "autoClicker",
-                cost: 500,
-                label: "Auto Clicker (500 Cookies)",
+                cost: 100,
+                label: "Auto-Klicker (100 Cookies)",
                 effect: () => {
                     if (!autoClickerActive) {
                         autoClickerActive = true;
@@ -189,16 +194,16 @@
             },
             {
                 id: "clickMultiplier",
-                cost: 1000,
-                label: "Click Multiplier (1000 Cookies)",
+                cost: 200,
+                label: "Klick-Multiplikator (200 Cookies)",
                 effect: () => {
                     clickMultiplier *= 2;
                 }
             },
             {
                 id: "cookieDoubling",
-                cost: 2000,
-                label: "Cookie Doubler (2000 Cookies)",
+                cost: 500,
+                label: "Cookie-Doppler (500 Cookies)",
                 effect: () => {
                     if (!cookieDoublingActive) {
                         cookieDoublingActive = true;
@@ -210,171 +215,208 @@
             },
             {
                 id: "extraCookies",
-                cost: 1000,
-                label: "Extra Cookies (1000 Cookies)",
+                cost: 250,
+                label: "Extra Cookies (250 Cookies)",
                 effect: () => {
-                    score += 500; // Gives a one-time bonus of 500 cookies
+                    score += 250;
                     updateScore();
                 }
             },
-            // Neue Items (20 neue Items + 10 zusätzliche)
             {
                 id: "superClicker",
-                cost: 3000,
-                label: "Super Clicker (3000 Cookies)",
+                cost: 1000,
+                label: "Super-Klicker (1000 Cookies)",
                 effect: () => {
-                    clickMultiplier *= 3;
+                    clickMultiplier *= 5; // Multiplies clicks by 5
                 }
             },
             {
-                id: "goldenCookie",
-                cost: 5000,
-                label: "Golden Cookie (5000 Cookies)",
+                id: "cookieMachine",
+                cost: 1500,
+                label: "Cookie-Maschine (1500 Cookies)",
+                effect: () => {
+                    setInterval(() => {
+                        score += 10;
+                        updateScore();
+                    }, 2000); // Adds cookies over time
+                }
+            },
+            {
+                id: "cookieStorm",
+                cost: 3000,
+                label: "Cookie-Sturm (3000 Cookies)",
+                effect: () => {
+                    for (let i = 0; i < 10; i++) {
+                        score += 100;
+                    }
+                    updateScore();
+                }
+            },
+            {
+                id: "clickBoomerang",
+                cost: 700,
+                label: "Click-Boomerang (700 Cookies)",
+                effect: () => {
+                    score += 500; // Gain cookies immediately on purchase
+                    updateScore();
+                }
+            },
+            {
+                id: "doubleClick",
+                cost: 1500,
+                label: "Doppelklick (1500 Cookies)",
+                effect: () => {
+                    clickMultiplier *= 2; // Doubles the click multiplier
+                }
+            },
+            {
+                id: "tripleClick",
+                cost: 3000,
+                label: "Dreifachklick (3000 Cookies)",
+                effect: () => {
+                    clickMultiplier *= 3; // Triples the click multiplier
+                }
+            },
+            // Weitere 30 Items mit speziellen Aktionen
+            {
+                id: "speedBoost",
+                cost: 400,
+                label: "Geschwindigkeitsboost (400 Cookies)",
+                effect: () => {
+                    clickMultiplier += 1;
+                    updateScore();
+                }
+            },
+            {
+                id: "megaClick",
+                cost: 2000,
+                label: "Mega-Klick (2000 Cookies)",
                 effect: () => {
                     score += 1000;
                     updateScore();
                 }
             },
             {
-                id: "doubleClicker",
-                cost: 4000,
-                label: "Double Clicker (4000 Cookies)",
+                id: "timeWarp",
+                cost: 3500,
+                label: "Zeitverzerrung (3500 Cookies)",
                 effect: () => {
-                    clickMultiplier *= 2;
-                }
-            },
-            {
-                id: "cookieFactory",
-                cost: 8000,
-                label: "Cookie Factory (8000 Cookies)",
-                effect: () => {
-                    setInterval(() => {
-                        score += 10;
+                    setTimeout(() => {
+                        score += 1000; // Bonus nach Verzögerung
                         updateScore();
-                    }, 1000);
+                    }, 3000); // 3 Sekunden Verzögerung
                 }
             },
             {
-                id: "cookieMachine",
-                cost: 12000,
-                label: "Cookie Machine (12000 Cookies)",
+                id: "cookieMagnet",
+                cost: 1200,
+                label: "Cookie-Magnet (1200 Cookies)",
                 effect: () => {
-                    setInterval(() => {
-                        score += 20;
-                        updateScore();
-                    }, 1000);
-                }
-            },
-            {
-                id: "cookieStorm",
-                cost: 7000,
-                label: "Cookie Storm (7000 Cookies)",
-                effect: () => {
-                    setInterval(() => {
-                        score += 50;
-                        updateScore();
-                    }, 500);
-                }
-            },
-            {
-                id: "cookieMultiplier",
-                cost: 10000,
-                label: "Cookie Multiplier (10000 Cookies)",
-                effect: () => {
-                    clickMultiplier *= 5;
-                }
-            },
-            {
-                id: "cookieBoost",
-                cost: 15000,
-                label: "Cookie Boost (15000 Cookies)",
-                effect: () => {
-                    score += 3000;
+                    score += 200;
                     updateScore();
                 }
             },
             {
-                id: "megaCookies",
-                cost: 20000,
-                label: "Mega Cookies (20000 Cookies)",
+                id: "clickFreeze",
+                cost: 5000,
+                label: "Klick-Freeze (5000 Cookies)",
                 effect: () => {
-                    score += 10000;
+                    setTimeout(() => {
+                        score += 1500;
+                        updateScore();
+                    }, 5000); // Bonus nach 5 Sekunden
+                }
+            },
+            {
+                id: "cookieRain",
+                cost: 1500,
+                label: "Kekse Regen (1500 Cookies)",
+                effect: () => {
+                    for (let i = 0; i < 20; i++) {
+                        score += 50;
+                    }
+                    updateScore();
+                }
+            },
+            {
+                id: "instantCookies",
+                cost: 2000,
+                label: "Instant Cookies (2000 Cookies)",
+                effect: () => {
+                    score += 2000;
+                    updateScore();
+                }
+            },
+            {
+                id: "doubleIncome",
+                cost: 5000,
+                label: "Doppelte Einkünfte (5000 Cookies)",
+                effect: () => {
+                    setInterval(() => {
+                        score += 200;
+                        updateScore();
+                    }, 1500); // Verdoppelte Einkünfte alle 1,5 Sekunden
+                }
+            },
+            {
+                id: "ultraClicker",
+                cost: 10000,
+                label: "Ultra-Klicker (10000 Cookies)",
+                effect: () => {
+                    clickMultiplier *= 10; // Erhöht den Klick-Multiplikator um das 10-fache
+                }
+            },
+            {
+                id: "cookieFarm",
+                cost: 8000,
+                label: "Cookie-Farm (8000 Cookies)",
+                effect: () => {
+                    setInterval(() => {
+                        score += 100;
+                        updateScore();
+                    }, 1000); // Produziert automatisch Cookies
+                }
+            },
+            {
+                id: "klickMachine",
+                cost: 6000,
+                label: "Klick-Maschine (6000 Cookies)",
+                effect: () => {
+                    setInterval(() => {
+                        score += 250;
+                        updateScore();
+                    }, 2000); // Fügt alle 2 Sekunden 250 Cookies hinzu
+                }
+            },
+            {
+                id: "cookiePalace",
+                cost: 12000,
+                label: "Cookie-Palast (12000 Cookies)",
+                effect: () => {
+                    score += 5000; // Große Belohnung
                     updateScore();
                 }
             },
             {
                 id: "cookieGenerator",
-                cost: 25000,
-                label: "Cookie Generator (25000 Cookies)",
+                cost: 4000,
+                label: "Cookie-Generator (4000 Cookies)",
                 effect: () => {
                     setInterval(() => {
-                        score += 500;
+                        score += 50;
                         updateScore();
                     }, 1000);
                 }
             },
             {
-                id: "cookieSupernova",
-                cost: 30000,
-                label: "Cookie Supernova (30000 Cookies)",
-                effect: () => {
-                    score += 25000;
-                    updateScore();
-                }
-            },
-            {
-                id: "cookieWorld",
-                cost: 40000,
-                label: "Cookie World (40000 Cookies)",
-                effect: () => {
-                    score += 100000;
-                    updateScore();
-                }
-            },
-            {
-                id: "cookieMeteor",
-                cost: 45000,
-                label: "Cookie Meteor (45000 Cookies)",
-                effect: () => {
-                    score += 50000;
-                    updateScore();
-                }
-            },
-            {
-                id: "cookieMultiplier2",
-                cost: 50000,
-                label: "Cookie Multiplier II (50000 Cookies)",
-                effect: () => {
-                    clickMultiplier *= 15;
-                }
-            },
-            {
-                id: "cookieMachinePlus",
-                cost: 60000,
-                label: "Cookie Machine Plus (60000 Cookies)",
+                id: "superMachine",
+                cost: 20000,
+                label: "Super-Maschine (20000 Cookies)",
                 effect: () => {
                     setInterval(() => {
-                        score += 1000;
+                        score += 500;
                         updateScore();
-                    }, 500);
-                }
-            },
-            {
-                id: "cookieEmpire",
-                cost: 70000,
-                label: "Cookie Empire (70000 Cookies)",
-                effect: () => {
-                    score += 100000;
-                    updateScore();
-                }
-            },
-            {
-                id: "cookieNebula",
-                cost: 80000,
-                label: "Cookie Nebula (80000 Cookies)",
-                effect: () => {
-                    score += 200000;
-                    updateScore();
+                    }, 1500); // Generiert Cookies über die Zeit
                 }
             }
         ];
@@ -399,4 +441,3 @@
     </script>
 </body>
 </html>
-
