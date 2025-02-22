@@ -184,6 +184,7 @@
                 loadGameData();
                 loginContainer.style.display = "none";
                 updateScore();
+                showShop(); // Show the shop once logged in
             }
         });
 
@@ -196,6 +197,7 @@
                 loadGameData();
                 loginContainer.style.display = "none";
                 updateScore();
+                showShop(); // Show the shop once logged in
             }
         });
 
@@ -213,6 +215,10 @@
         }
 
         // Open and close the shop
+        function showShop() {
+            shop.style.display = "block";
+        }
+
         shopToggle.addEventListener("click", () => {
             shopVisible = !shopVisible;
             shop.style.display = shopVisible ? "block" : "none";
@@ -268,3 +274,4 @@
     </script>
 </body>
 </html>
+
