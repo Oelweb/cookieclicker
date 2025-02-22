@@ -113,8 +113,8 @@
         <button class="shop-item" id="doubleClick">Doppelte Cookies (50 Cookies)</button>
         <button class="shop-item" id="goldenCookie">Goldener Keks (200 Cookies)</button>
         <button class="shop-item" id="megaClick">Mega-Klick (500 Cookies)</button>
-        
-        <!-- 20 neue Shop Items -->
+
+        <!-- 30 zusätzliche Shop Items -->
         <button class="shop-item" id="clickMultiplier">Klick Multiplikator (100 Cookies)</button>
         <button class="shop-item" id="cookieStorm">Keks-Sturm (250 Cookies)</button>
         <button class="shop-item" id="cookieExplosion">Keks-Explosion (500 Cookies)</button>
@@ -135,6 +135,17 @@
         <button class="shop-item" id="cookieResearch">Keks Forschung (2500 Cookies)</button>
         <button class="shop-item" id="megaBoost">Mega Boost (3000 Cookies)</button>
         <button class="shop-item" id="cookieRobot">Cookie Roboter (3500 Cookies)</button>
+        <!-- Weitere 10 Shop-Items -->
+        <button class="shop-item" id="doubleCookies">Doppelte Cookies (600 Cookies)</button>
+        <button class="shop-item" id="timeAccelerator">Zeit Beschleuniger (700 Cookies)</button>
+        <button class="shop-item" id="cookiePrinter">Cookie Drucker (800 Cookies)</button>
+        <button class="shop-item" id="cookieHarvest">Keks Ernte (1000 Cookies)</button>
+        <button class="shop-item" id="superMegaClick">Super Mega Klick (1500 Cookies)</button>
+        <button class="shop-item" id="cookieStormMachine">Keks-Sturm Maschine (2000 Cookies)</button>
+        <button class="shop-item" id="infiniteCookies">Unendliche Cookies (5000 Cookies)</button>
+        <button class="shop-item" id="cookieRocket">Cookie Rakete (6000 Cookies)</button>
+        <button class="shop-item" id="megaClicker">Mega Klicker (4000 Cookies)</button>
+        <button class="shop-item" id="hyperClick">Hyper Klick (10000 Cookies)</button>
 
         <button class="shop-item close-shop" id="closeShop">Schließen</button>
     </div>
@@ -164,83 +175,42 @@
         const clickSound = document.getElementById("clickSound");
         const purchaseSound = document.getElementById("purchaseSound");
 
-        // Neue Shop-Items
-        const clickMultiplierBtn = document.getElementById("clickMultiplier");
-        const cookieStormBtn = document.getElementById("cookieStorm");
-        const cookieExplosionBtn = document.getElementById("cookieExplosion");
-        const cookieRainBtn = document.getElementById("cookieRain");
-        const timeFreezeBtn = document.getElementById("timeFreeze");
-        const cookieMagnetBtn = document.getElementById("cookieMagnet");
-        const goldenBiscuitBtn = document.getElementById("goldenBiscuit");
-        const tripleClickBtn = document.getElementById("tripleClick");
-        const cookieDroneBtn = document.getElementById("cookieDrone");
-        const cookieFactoryBtn = document.getElementById("cookieFactory");
-        const cookieBoostBtn = document.getElementById("cookieBoost");
-        const superClickBtn = document.getElementById("superClick");
-        const cookieMachineBtn = document.getElementById("cookieMachine");
-        const ultimateClickerBtn = document.getElementById("ultimateClicker");
-        const doubleSpeedBtn = document.getElementById("doubleSpeed");
-        const autoProductionBtn = document.getElementById("autoProduction");
-        const cookieMansionBtn = document.getElementById("cookieMansion");
-        const cookieResearchBtn = document.getElementById("cookieResearch");
-        const megaBoostBtn = document.getElementById("megaBoost");
-        const cookieRobotBtn = document.getElementById("cookieRobot");
-
-        // Cookie Clicker: Normal Click Funktionalität
-        function clickCookie() {
-            score += clickMultiplier;
-            scoreDisplay.textContent = `Cookies: ${score}`;
-            clickSound.play();
-        }
-
-        let clickInterval;
-        cookie.addEventListener("mousedown", () => {
-            clickInterval = setInterval(clickCookie, clickSpeed);
-        });
-
-        cookie.addEventListener("mouseup", () => {
-            clearInterval(clickInterval);
-        });
-
-        cookie.addEventListener("mouseleave", () => {
-            clearInterval(clickInterval);
-        });
-
-        // Shop-Logik
-        shopToggle.addEventListener("click", () => {
-            shop.style.display = "block";
-        });
-
-        closeShop.addEventListener("click", () => {
-            shop.style.display = "none";
-        });
-
-        // Alle Shop-Items
+        // 30 neue Shop-Items
         const shopItems = [
             { element: autoClicker, cost: 10, action: () => { autoClickerActive = true; startAutoClicker(); } },
             { element: doubleClick, cost: 50, action: () => { doubleClickActive = true; clickMultiplier = 2; } },
             { element: goldenCookie, cost: 200, action: () => { /* Golden Cookie Logic */ } },
             { element: megaClick, cost: 500, action: () => { /* Mega Click Logic */ } },
-            { element: clickMultiplierBtn, cost: 100, action: () => { clickMultiplier = 2; } },
-            { element: cookieStormBtn, cost: 250, action: () => { /* Cookie Storm Logic */ } },
-            { element: cookieExplosionBtn, cost: 500, action: () => { /* Cookie Explosion Logic */ } },
-            { element: cookieRainBtn, cost: 750, action: () => { /* Cookie Rain Logic */ } },
-            { element: timeFreezeBtn, cost: 1000, action: () => { /* Time Freeze Logic */ } },
-            { element: cookieMagnetBtn, cost: 200, action: () => { /* Cookie Magnet Logic */ } },
-            { element: goldenBiscuitBtn, cost: 1000, action: () => { /* Golden Biscuit Logic */ } },
-            { element: tripleClickBtn, cost: 150, action: () => { clickMultiplier = 3; } },
-            { element: cookieDroneBtn, cost: 200, action: () => { /* Cookie Drone Logic */ } },
-            { element: cookieFactoryBtn, cost: 500, action: () => { /* Cookie Factory Logic */ } },
-            { element: cookieBoostBtn, cost: 300, action: () => { /* Cookie Boost Logic */ } },
-            { element: superClickBtn, cost: 400, action: () => { /* Super Click Logic */ } },
-            { element: cookieMachineBtn, cost: 600, action: () => { /* Cookie Machine Logic */ } },
-            { element: ultimateClickerBtn, cost: 800, action: () => { /* Ultimate Clicker Logic */ } },
-            { element: doubleSpeedBtn, cost: 1200, action: () => { /* Double Speed Logic */ } },
-            { element: autoProductionBtn, cost: 1500, action: () => { /* Auto Production Logic */ } },
-            { element: cookieMansionBtn, cost: 2000, action: () => { /* Cookie Mansion Logic */ } },
-            { element: cookieResearchBtn, cost: 2500, action: () => { /* Cookie Research Logic */ } },
-            { element: megaBoostBtn, cost: 3000, action: () => { /* Mega Boost Logic */ } },
-            { element: cookieRobotBtn, cost: 3500, action: () => { /* Cookie Robot Logic */ } }
+            { element: clickMultiplier, cost: 100, action: () => { clickMultiplier = 2; } },
+            { element: cookieStorm, cost: 250, action: () => { /* Cookie Storm Logic */ } },
+            { element: cookieExplosion, cost: 500, action: () => { /* Cookie Explosion Logic */ } },
+            { element: cookieRain, cost: 750, action: () => { /* Cookie Rain Logic */ } },
+            { element: timeFreeze, cost: 1000, action: () => { /* Time Freeze Logic */ } },
+            { element: cookieMagnet, cost: 200, action: () => { /* Cookie Magnet Logic */ } },
+            { element: goldenBiscuit, cost: 1000, action: () => { /* Golden Biscuit Logic */ } },
+            { element: tripleClick, cost: 150, action: () => { clickMultiplier = 3; } },
+            { element: cookieDrone, cost: 200, action: () => { /* Cookie Drone Logic */ } },
+            { element: cookieFactory, cost: 500, action: () => { /* Cookie Factory Logic */ } },
+            { element: cookieBoost, cost: 300, action: () => { /* Cookie Boost Logic */ } },
+            { element: superClick, cost: 400, action: () => { /* Super Click Logic */ } },
+            { element: cookieMachine, cost: 600, action: () => { /* Cookie Machine Logic */ } },
+            { element: ultimateClicker, cost: 800, action: () => { /* Ultimate Clicker Logic */ } },
+            { element: doubleSpeed, cost: 1200, action: () => { /* Double Speed Logic */ } },
+            { element: autoProduction, cost: 1500, action: () => { /* Auto Production Logic */ } },
+            { element: cookieMansion, cost: 2000, action: () => { /* Cookie Mansion Logic */ } },
+            { element: cookieResearch, cost: 2500, action: () => { /* Cookie Research Logic */ } },
+            { element: megaBoost, cost: 3000, action: () => { /* Mega Boost Logic */ } },
+            { element: cookieRobot, cost: 3500, action: () => { /* Cookie Robot Logic */ } },
+            { element: doubleCookies, cost: 600, action: () => { /* Double Cookies Logic */ } },
+            { element: timeAccelerator, cost: 700, action: () => { /* Time Accelerator Logic */ } },
+            { element: cookiePrinter, cost: 800, action: () => { /* Cookie Printer Logic */ } },
+            { element: cookieHarvest, cost: 1000, action: () => { /* Cookie Harvest Logic */ } },
+            { element: superMegaClick, cost: 1500, action: () => { /* Super Mega Click Logic */ } },
+            { element: cookieStormMachine, cost: 2000, action: () => { /* Cookie Storm Machine Logic */ } },
+            { element: infiniteCookies, cost: 5000, action: () => { /* Infinite Cookies Logic */ } },
+            { element: cookieRocket, cost: 6000, action: () => { /* Cookie Rocket Logic */ } },
+            { element: megaClicker, cost: 4000, action: () => { /* Mega Clicker Logic */ } },
+            { element: hyperClick, cost: 10000, action: () => { /* Hyper Click Logic */ } }
         ];
 
         // Event-Listener für jedes Shop-Item hinzufügen
@@ -271,4 +241,3 @@
     </script>
 </body>
 </html>
-
