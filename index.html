@@ -211,13 +211,7 @@
                 cost: 50,
                 label: "Auto-Klicker 1 (50 Cookies)",
                 effect: () => {
-                    if (!autoClickerActive) {
-                        autoClickerActive = true;
-                        autoClickerInterval = setInterval(() => {
-                            score += 1 * clickMultiplier;
-                            updateScore();
-                        }, 2000); // Klickt alle 2 Sekunden
-                    }
+                    moneyPerSecond += 1;
                 }
             },
             {
