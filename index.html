@@ -175,24 +175,6 @@
         const clickSound = document.getElementById("clickSound");
         const purchaseSound = document.getElementById("purchaseSound");
 
-        // Gerät auswählen
-        function askDeviceType() {
-            const deviceChoice = prompt("Auf welchem Gerät spielst du? (PC/Handy/Tablet)");
-            if (deviceChoice.toLowerCase() === "pc") {
-                device = "PC";
-                document.body.style.fontSize = "18px"; // PC-Optimierung
-            } else if (deviceChoice.toLowerCase() === "handy") {
-                device = "Handy";
-                document.body.style.fontSize = "14px"; // Handy-Optimierung
-            } else if (deviceChoice.toLowerCase() === "tablet") {
-                device = "Tablet";
-                document.body.style.fontSize = "16px"; // Tablet-Optimierung
-            } else {
-                alert("Ungültige Auswahl. Standard auf PC gesetzt.");
-                device = "PC";
-            }
-        }
-
         // Score aktualisieren
         function updateScore() {
             scoreDisplay.textContent = `Cookies: ${score}`;
