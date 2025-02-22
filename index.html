@@ -209,7 +209,7 @@
             {
                 id: "autoClicker1",
                 cost: 50,
-                label: "Auto-Klicker (50 Cookies)",
+                label: "Auto-Klicker 1 (50 Cookies)",
                 effect: () => {
                     if (!autoClickerActive) {
                         autoClickerActive = true;
@@ -267,13 +267,36 @@
                     }, 5000); // 5 Sekunden lang
                 }
             },
-            // Weitere Items
-            ...Array.from({ length: 45 }, (_, index) => ({
-                id: `item${index + 5}`,
-                cost: (index + 5) * 50,  // Kostensteigerung von 50 pro Item
-                label: `Item ${index + 5} (${(index + 5) * 50} Cookies)`,
+            {
+                id: "timeFreeze",
+                cost: 800,
+                label: "Zeit einfrieren (800 Cookies)",
                 effect: () => {
-                    alert(`Du hast Item ${index + 5} gekauft!`);
+                    const originalInterval = autoClickerInterval;
+                    clearInterval(autoClickerInterval);
+                    setTimeout(() => {
+                        autoClickerInterval = originalInterval;
+                    }, 5000); // Stoppt Auto-Klicker für 5 Sekunden
+                }
+            },
+            {
+                id: "cookieDoubling",
+                cost: 1000,
+                label: "Cookie Verdoppler (1000 Cookies)",
+                effect: () => {
+                    clickMultiplier = 2;
+                    setTimeout(() => {
+                        clickMultiplier = 1;
+                    }, 30000); // 30 Sekunden lang
+                }
+            },
+            // Weiter 43 Items ...
+            ...Array.from({ length: 43 }, (_, index) => ({
+                id: `item${index + 7}`,
+                cost: (index + 7) * 100,  // Kostensteigerung
+                label: `Item ${index + 7} (${(index + 7) * 100} Cookies)`,
+                effect: () => {
+                    alert(`Du hast Item ${index + 7} gekauft!`);
                 }
             }))
         ];
