@@ -47,6 +47,9 @@
             position: absolute;
             top: 20px;
             left: 20px;
+            cursor: pointer;
+            width: 50px;
+            height: 50px;
         }
         .light-mode {
             background-color: white;
@@ -71,22 +74,33 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: gray;
-            padding: 20px;
+            background: #333;
+            padding: 30px;
             border-radius: 10px;
             text-align: center;
+            width: 300px;
+            box-shadow: 0px 0px 15px rgba(255, 255, 255, 0.2);
+        }
+        .shop-modal h2 {
+            margin-bottom: 20px;
         }
         .shop-item {
             margin: 10px;
-            padding: 10px;
+            padding: 12px;
             cursor: pointer;
-            background: black;
+            background: #555;
             color: white;
             border: none;
             border-radius: 5px;
+            width: 100%;
+            transition: background 0.3s, transform 0.2s;
+        }
+        .shop-item:hover {
+            background: #777;
+            transform: scale(1.05);
         }
         .close-shop {
-            margin-top: 10px;
+            margin-top: 20px;
             background: red;
         }
     </style>
@@ -94,10 +108,10 @@
 <body class="dark-mode">
     <p id="score" class="score-container">Cookies: 0</p>
     <button id="themeToggle" class="button theme-button">Dark/Light Mode</button>
-    <button id="shopToggle" class="button shop-button">Shop</button>
+    <img id="shopToggle" class="shop-button" src="shop-icon.png" alt="Shop">
     <div class="game-container">
         <h1>Cookie Clicker</h1>
-        <img id="cookie" class="cookie" src="cookie-icon.png" alt="Cookie">
+        <img id="cookie" class="cookie" src="https://upload.wikimedia.org/wikipedia/commons/6/69/Chocolate_Chip_Cookie_%28cropped%29.jpg" alt="Cookie">
     </div>
     
     <div id="shop" class="shop-modal">
@@ -109,7 +123,7 @@
         <button class="shop-item close-shop" id="closeShop">Schließen</button>
     </div>
 
-    <audio id="clickSound" src="cookie-saund.mp3"></audio>
+    <audio id="clickSound" src="click.mp3"></audio>
     <audio id="purchaseSound" src="purchase.mp3"></audio>
 
     <script>
@@ -148,39 +162,6 @@
         closeShop.addEventListener("click", () => {
             shop.style.display = "none";
         });
-
-        function purchase(item, cost, effect) {
-            if (score >= cost) {
-                score -= cost;
-                scoreDisplay.textContent = `Cookies: ${score}`;
-                effect();
-                purchaseSound.play();
-            }
-        }
-
-        autoClicker.addEventListener("click", () => purchase(autoClicker, 10, () => {
-            if (!autoClickerActive) {
-                autoClickerActive = true;
-                setInterval(() => {
-                    score++;
-                    scoreDisplay.textContent = `Cookies: ${score}`;
-                }, 1000);
-            }
-        }));
-
-        doubleClick.addEventListener("click", () => purchase(doubleClick, 50, () => {
-            doubleClickActive = true;
-        }));
-
-        goldenCookie.addEventListener("click", () => purchase(goldenCookie, 200, () => {
-            score += 100;
-            scoreDisplay.textContent = `Cookies: ${score}`;
-        }));
-
-        megaClick.addEventListener("click", () => purchase(megaClick, 500, () => {
-            score += 500;
-            scoreDisplay.textContent = `Cookies: ${score}`;
-        }));
     </script>
 </body>
 </html>
