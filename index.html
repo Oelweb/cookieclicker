@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cookie Clicker</title>
     <style>
+        /* Stil bleibt unverändert */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             display: flex;
@@ -182,13 +183,13 @@
             // Create a click effect
             const clickEffect = document.createElement('div');
             clickEffect.classList.add('click-effect');
-            clickEffect.textContent = '+1';
+            clickEffect.textContent = `+${clickMultiplier}`;
             document.body.appendChild(clickEffect);
             setTimeout(() => {
                 clickEffect.remove();
             }, 400);
 
-            score += 1 * clickMultiplier;
+            score += clickMultiplier;
             updateScore();
             clickSound.play();
         });
@@ -206,7 +207,7 @@
         // Shop Items Definition with actions
         const shopItems = [
             {
-                id: "autoClicker",
+                id: "autoClicker1",
                 cost: 50,
                 label: "Auto-Klicker (50 Cookies)",
                 effect: () => {
@@ -215,30 +216,64 @@
                         autoClickerInterval = setInterval(() => {
                             score += 1 * clickMultiplier;
                             updateScore();
-                        }, 1000);
+                        }, 2000);
                     }
                 }
             },
             {
-                id: "cookieDoubling",
+                id: "doubleClick",
                 cost: 100,
-                label: "Cookie-Doppler (100 Cookies)",
+                label: "Doppelter Klick (100 Cookies)",
                 effect: () => {
-                    if (!cookieDoublingActive) {
-                        cookieDoublingActive = true;
-                        setTimeout(() => {
-                            cookieDoublingActive = false;
-                        }, 5000);
+                    clickMultiplier = 2;
+                    setTimeout(() => {
+                        clickMultiplier = 1;
+                    }, 10000); // 10 Sekunden lang
+                }
+            },
+            {
+                id: "tripleClick",
+                cost: 150,
+                label: "Dreifacher Klick (150 Cookies)",
+                effect: () => {
+                    clickMultiplier = 3;
+                    setTimeout(() => {
+                        clickMultiplier = 1;
+                    }, 10000); // 10 Sekunden lang
+                }
+            },
+            {
+                id: "autoClicker2",
+                cost: 200,
+                label: "Auto-Klicker 2x (200 Cookies)",
+                effect: () => {
+                    if (!autoClickerActive) {
+                        autoClickerActive = true;
+                        autoClickerInterval = setInterval(() => {
+                            score += 2 * clickMultiplier;
+                            updateScore();
+                        }, 1000); // Schnellere Auto-Klicker
                     }
                 }
             },
-            // Die 50 zusätzlichen Items
-            ...Array.from({ length: 50 }, (_, index) => ({
-                id: `item${index + 3}`,
-                cost: (index + 3) * 20,  // Kostensteigerung von 20 pro Item
-                label: `Item ${index + 3} (${(index + 3) * 20} Cookies)`,
+            {
+                id: "clickExplosion",
+                cost: 500,
+                label: "Klick-Explosion (500 Cookies)",
                 effect: () => {
-                    alert(`Du hast Item ${index + 3} gekauft!`);
+                    clickMultiplier = 10;
+                    setTimeout(() => {
+                        clickMultiplier = 1;
+                    }, 5000); // 5 Sekunden lang
+                }
+            },
+            // Weitere Items
+            ...Array.from({ length: 45 }, (_, index) => ({
+                id: `item${index + 5}`,
+                cost: (index + 5) * 50,  // Kostensteigerung von 50 pro Item
+                label: `Item ${index + 5} (${(index + 5) * 50} Cookies)`,
+                effect: () => {
+                    alert(`Du hast Item ${index + 5} gekauft!`);
                 }
             }))
         ];
