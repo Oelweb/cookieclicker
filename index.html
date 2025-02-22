@@ -38,6 +38,14 @@
         .button:hover {
             transform: scale(1.1);
         }
+        .shop-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            cursor: pointer;
+            width: 50px;
+            height: 50px;
+        }
         .cookie {
             width: 250px;
             height: 250px;
@@ -84,52 +92,57 @@
             background-color: #333;
             cursor: not-allowed;
         }
-        .login-container {
+        .close-shop {
             margin-top: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        .input-field {
-            margin-bottom: 10px;
-            padding: 10px;
-            font-size: 18px;
-        }
-        /* Shop button always at top left */
-        .shop-button {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            cursor: pointer;
-            width: 50px;
-            height: 50px;
+            background: red;
         }
     </style>
 </head>
-<body>
+<body class="dark-mode">
     <p id="score" class="score-container">Cookies: 0</p>
-    
-    <!-- Shop button always visible in top left -->
     <img id="shopToggle" class="shop-button" src="shop-image.png" alt="Shop">
-
     <div class="game-container">
         <h1>Cookie Clicker</h1>
         <img id="cookie" class="cookie" src="cookie-icon.png" alt="Cookie">
     </div>
-
-    <div id="login" class="login-container">
-        <h2>Login</h2>
-        <input id="username" class="input-field" type="text" placeholder="Benutzername">
-        <input id="password" class="input-field" type="password" placeholder="Passwort">
-        <button id="loginButton" class="button">Login</button>
-        <button id="signupButton" class="button">Registrieren</button>
-    </div>
-
+    
     <div id="shop" class="shop-modal">
         <h2>Shop</h2>
         <button class="shop-item" id="autoClicker">Auto-Clicker (10 Cookies)</button>
         <button class="shop-item" id="doubleClick">Doppelte Cookies (50 Cookies)</button>
         <button class="shop-item" id="goldenCookie">Goldener Keks (200 Cookies)</button>
+        <button class="shop-item" id="megaClick">Mega-Klick (500 Cookies)</button>
+        <!-- 30 zusätzliche Shop Items -->
+        <button class="shop-item" id="clickMultiplier">Klick Multiplikator (100 Cookies)</button>
+        <button class="shop-item" id="cookieStorm">Keks-Sturm (250 Cookies)</button>
+        <button class="shop-item" id="cookieExplosion">Keks-Explosion (500 Cookies)</button>
+        <button class="shop-item" id="cookieRain">Keks-Regen (750 Cookies)</button>
+        <button class="shop-item" id="timeFreeze">Zeit Stopp (1000 Cookies)</button>
+        <button class="shop-item" id="cookieMagnet">Cookie Magnet (200 Cookies)</button>
+        <button class="shop-item" id="goldenBiscuit">Goldener Keks (1000 Cookies)</button>
+        <button class="shop-item" id="tripleClick">Dreifache Klicks (150 Cookies)</button>
+        <button class="shop-item" id="cookieDrone">Cookie Drohne (200 Cookies)</button>
+        <button class="shop-item" id="cookieFactory">Cookie Fabrik (500 Cookies)</button>
+        <button class="shop-item" id="cookieBoost">Keks Boost (300 Cookies)</button>
+        <button class="shop-item" id="superClick">Super Klick (400 Cookies)</button>
+        <button class="shop-item" id="cookieMachine">Cookie Maschine (600 Cookies)</button>
+        <button class="shop-item" id="ultimateClicker">Ultimative Klicker (800 Cookies)</button>
+        <button class="shop-item" id="doubleSpeed">Doppelte Geschwindigkeit (1200 Cookies)</button>
+        <button class="shop-item" id="autoProduction">Auto-Produktion (1500 Cookies)</button>
+        <button class="shop-item" id="cookieMansion">Cookie Mansion (2000 Cookies)</button>
+        <button class="shop-item" id="cookieResearch">Keks Forschung (2500 Cookies)</button>
+        <button class="shop-item" id="megaBoost">Mega Boost (3000 Cookies)</button>
+        <button class="shop-item" id="cookieRobot">Cookie Roboter (3500 Cookies)</button>
+        <button class="shop-item" id="doubleCookies">Doppelte Cookies (600 Cookies)</button>
+        <button class="shop-item" id="timeAccelerator">Zeit Beschleuniger (700 Cookies)</button>
+        <button class="shop-item" id="cookiePrinter">Cookie Drucker (800 Cookies)</button>
+        <button class="shop-item" id="cookieHarvest">Keks Ernte (1000 Cookies)</button>
+        <button class="shop-item" id="superMegaClick">Super Mega Klick (1500 Cookies)</button>
+        <button class="shop-item" id="cookieStormMachine">Keks-Sturm Maschine (2000 Cookies)</button>
+        <button class="shop-item" id="infiniteCookies">Unendliche Cookies (5000 Cookies)</button>
+        <button class="shop-item" id="cookieRocket">Cookie Rakete (6000 Cookies)</button>
+        <button class="shop-item" id="megaClicker">Mega Klicker (4000 Cookies)</button>
+        <button class="shop-item" id="hyperClick">Hyper Klick (10000 Cookies)</button>
         <button class="shop-item close-shop" id="closeShop">Schließen</button>
     </div>
 
@@ -138,8 +151,6 @@
 
     <script>
         let score = 0;
-        let username = '';
-        let password = '';
         let autoClickerActive = false;
         let doubleClickActive = false;
         let clickMultiplier = 1;
@@ -154,84 +165,71 @@
         const autoClicker = document.getElementById("autoClicker");
         const doubleClick = document.getElementById("doubleClick");
         const goldenCookie = document.getElementById("goldenCookie");
+        const megaClick = document.getElementById("megaClick");
         const clickSound = document.getElementById("clickSound");
         const purchaseSound = document.getElementById("purchaseSound");
 
-        // Get login/signup buttons
-        const loginButton = document.getElementById("loginButton");
-        const signupButton = document.getElementById("signupButton");
-        const usernameInput = document.getElementById("username");
-        const passwordInput = document.getElementById("password");
-        const loginContainer = document.getElementById("login");
+        // Shop Items und Aktionen
+        const shopItems = [
+            { element: autoClicker, cost: 10, action: () => { autoClickerActive = true; startAutoClicker(); } },
+            { element: doubleClick, cost: 50, action: () => { doubleClickActive = true; clickMultiplier = 2; } },
+            { element: goldenCookie, cost: 200, action: () => { /* Golden Cookie Logic */ } },
+            { element: megaClick, cost: 500, action: () => { /* Mega Click Logic */ } },
+            { element: clickMultiplier, cost: 100, action: () => { clickMultiplier = 2; } },
+            { element: cookieStorm, cost: 250, action: () => { /* Cookie Storm Logic */ } },
+            { element: cookieExplosion, cost: 500, action: () => { /* Cookie Explosion Logic */ } },
+            { element: cookieRain, cost: 750, action: () => { /* Cookie Rain Logic */ } },
+            { element: timeFreeze, cost: 1000, action: () => { /* Time Freeze Logic */ } },
+            { element: cookieMagnet, cost: 200, action: () => { /* Cookie Magnet Logic */ } },
+            { element: goldenBiscuit, cost: 1000, action: () => { /* Golden Biscuit Logic */ } },
+            { element: tripleClick, cost: 150, action: () => { clickMultiplier = 3; } },
+            { element: cookieDrone, cost: 200, action: () => { /* Cookie Drone Logic */ } },
+            { element: cookieFactory, cost: 500, action: () => { /* Cookie Factory Logic */ } },
+            { element: cookieBoost, cost: 300, action: () => { /* Cookie Boost Logic */ } },
+            { element: superClick, cost: 400, action: () => { /* Super Click Logic */ } },
+            { element: cookieMachine, cost: 600, action: () => { /* Cookie Machine Logic */ } },
+            { element: ultimateClicker, cost: 800, action: () => { /* Ultimate Clicker Logic */ } },
+            { element: doubleSpeed, cost: 1200, action: () => { /* Double Speed Logic */ } },
+            { element: autoProduction, cost: 1500, action: () => { /* Auto Production Logic */ } },
+            { element: cookieMansion, cost: 2000, action: () => { /* Cookie Mansion Logic */ } },
+            { element: cookieResearch, cost: 2500, action: () => { /* Cookie Research Logic */ } },
+            { element: megaBoost, cost: 3000, action: () => { /* Mega Boost Logic */ } },
+            { element: cookieRobot, cost: 3500, action: () => { /* Cookie Robot Logic */ } },
+            { element: doubleCookies, cost: 600, action: () => { /* Double Cookies Logic */ } },
+            { element: timeAccelerator, cost: 700, action: () => { /* Time Accelerator Logic */ } },
+            { element: cookiePrinter, cost: 800, action: () => { /* Cookie Printer Logic */ } },
+            { element: cookieHarvest, cost: 1000, action: () => { /* Cookie Harvest Logic */ } },
+            { element: superMegaClick, cost: 1500, action: () => { /* Super Mega Click Logic */ } },
+            { element: cookieStormMachine, cost: 2000, action: () => { /* Cookie Storm Machine Logic */ } },
+            { element: infiniteCookies, cost: 5000, action: () => { /* Infinite Cookies Logic */ } },
+            { element: cookieRocket, cost: 6000, action: () => { /* Cookie Rocket Logic */ } },
+            { element: megaClicker, cost: 4000, action: () => { /* Mega Clicker Logic */ } },
+            { element: hyperClick, cost: 10000, action: () => { /* Hyper Click Logic */ } }
+        ];
 
-        // Store user data in localStorage
-        const loadUserData = () => {
-            const savedUsername = localStorage.getItem('username');
-            const savedPassword = localStorage.getItem('password');
-            if (savedUsername && savedPassword) {
-                username = savedUsername;
-                password = savedPassword;
-                loadGameData();
-            }
-        };
+        // Funktion zum Starten des Auto-Clickers
+        function startAutoClicker() {
+            setInterval(() => {
+                if (autoClickerActive) {
+                    score += 1 * clickMultiplier;
+                    updateScore();
+                }
+            }, 1000);
+        }
 
-        // Save game data
-        const saveGameData = () => {
-            localStorage.setItem(`${username}_score`, score);
-        };
-
-        // Load saved game data
-        const loadGameData = () => {
-            const savedScore = localStorage.getItem(`${username}_score`);
-            if (savedScore) {
-                score = parseInt(savedScore);
-                updateScore();
-            }
-        };
-
-        // Event listeners for login and signup
-        loginButton.addEventListener("click", () => {
-            username = usernameInput.value;
-            password = passwordInput.value;
-            if (username && password) {
-                loadGameData();
-                loginContainer.style.display = "none";
-                updateScore();
-                showShop(); // Show the shop once logged in
-            }
-        });
-
-        signupButton.addEventListener("click", () => {
-            username = usernameInput.value;
-            password = passwordInput.value;
-            if (username && password) {
-                localStorage.setItem('username', username);
-                localStorage.setItem('password', password);
-                loadGameData();
-                loginContainer.style.display = "none";
-                updateScore();
-                showShop(); // Show the shop once logged in
-            }
-        });
-
-        // Cookie click
+        // Klick auf den Cookie
         cookie.addEventListener("click", () => {
             score += 1 * clickMultiplier;
             updateScore();
             clickSound.play();
         });
 
-        // Update the score
+        // Update der Anzeige
         function updateScore() {
             scoreDisplay.textContent = `Cookies: ${score}`;
-            saveGameData();
         }
 
-        // Open and close the shop
-        function showShop() {
-            shop.style.display = "block";
-        }
-
+        // Shop einblenden/ausblenden
         shopToggle.addEventListener("click", () => {
             shopVisible = !shopVisible;
             shop.style.display = shopVisible ? "block" : "none";
@@ -242,48 +240,19 @@
             shop.style.display = "none";
         });
 
-        // Shop Items actions
-        autoClicker.addEventListener("click", () => {
-            if (score >= 10) {
-                score -= 10;
-                updateScore();
-                autoClickerActive = true;
-                startAutoClicker();
-                purchaseSound.play();
-            }
-        });
-
-        doubleClick.addEventListener("click", () => {
-            if (score >= 50) {
-                score -= 50;
-                updateScore();
-                doubleClickActive = true;
-                clickMultiplier = 2;
-                purchaseSound.play();
-            }
-        });
-
-        goldenCookie.addEventListener("click", () => {
-            if (score >= 200) {
-                score -= 200;
-                updateScore();
-                // Logic for golden cookie can be added here
-                purchaseSound.play();
-            }
-        });
-
-        // Auto clicker logic
-        function startAutoClicker() {
-            setInterval(() => {
-                if (autoClickerActive) {
-                    score += 1 * clickMultiplier;
+        // Event-Listener für Shop-Items
+        shopItems.forEach(item => {
+            item.element.addEventListener("click", () => {
+                if (score >= item.cost && !item.element.disabled) {
+                    score -= item.cost;
+                    item.element.disabled = true;
                     updateScore();
+                    item.action();
+                    purchaseSound.play();
                 }
-            }, 1000);
-        }
-
-        // Load user data on page load
-        loadUserData();
+            });
+        });
     </script>
 </body>
 </html>
+
