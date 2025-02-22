@@ -7,105 +7,252 @@
     <style>
         body {
             font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #222;
+            color: white;
+            transition: background-color 0.5s, color 0.5s;
+            position: relative;
+        }
+        .score-container {
+            position: absolute;
+            top: 20px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .game-container {
             text-align: center;
         }
-        #cookie {
-            width: 200px;
+        .button {
+            padding: 10px 20px;
+            font-size: 18px;
+            margin: 10px;
             cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            transition: transform 0.2s;
         }
-        #score {
-            font-size: 24px;
-            margin: 10px 0;
+        .button:hover {
+            transform: scale(1.1);
         }
-        .shop {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 10px;
+        .shop-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            cursor: pointer;
+            width: 50px;
+            height: 50px;
+        }
+        .cookie {
+            width: 250px;
+            height: 250px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .cookie:active {
+            transform: scale(0.9);
+        }
+        .shop-modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #333;
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            width: 500px;
+            box-shadow: 0px 0px 15px rgba(255, 255, 255, 0.2);
+            overflow-y: scroll;
+            max-height: 80%;
+        }
+        .shop-modal h2 {
+            margin-bottom: 20px;
         }
         .shop-item {
-            padding: 10px;
-            background-color: #f4a261;
-            border: none;
+            margin: 10px;
+            padding: 12px;
             cursor: pointer;
-            font-size: 18px;
+            background: #555;
+            color: white;
+            border: none;
             border-radius: 5px;
+            width: 100%;
+            transition: background 0.3s, transform 0.2s;
+        }
+        .shop-item:hover {
+            background: #777;
+            transform: scale(1.05);
         }
         .shop-item:disabled {
-            background-color: #ccc;
+            background-color: #333;
             cursor: not-allowed;
+        }
+        .close-shop {
+            margin-top: 20px;
+            background: red;
         }
     </style>
 </head>
-<body>
-
-    <h1>Cookie Clicker</h1>
-    <p id="score">Cookies: 0</p>
-    <img id="cookie" src="https://i.imgur.com/OdL0XPt.png" alt="Cookie" onclick="addCookies()">
-
-    <h2>Shop</h2>
-    <div class="shop">
-        <button id="autoClicker" class="shop-item" data-cost="10">Auto Clicker (10 Cookies)</button>
-        <button id="doubleClick" class="shop-item" data-cost="50">Double Click (50 Cookies)</button>
-        <button id="goldenCookie" class="shop-item" data-cost="200">Golden Cookie (200 Cookies)</button>
-        <button id="megaClick" class="shop-item" data-cost="500">Mega Click (500 Cookies)</button>
-        <button id="clickMultiplier" class="shop-item" data-cost="100">Click Multiplier (100 Cookies)</button>
-        <button id="cookieStorm" class="shop-item" data-cost="250">Cookie Storm (250 Cookies)</button>
-        <button id="cookieExplosion" class="shop-item" data-cost="500">Cookie Explosion (500 Cookies)</button>
-        <button id="cookieRain" class="shop-item" data-cost="750">Cookie Rain (750 Cookies)</button>
-        <button id="timeFreeze" class="shop-item" data-cost="1000">Time Freeze (1000 Cookies)</button>
-        <button id="cookieMagnet" class="shop-item" data-cost="200">Cookie Magnet (200 Cookies)</button>
-        <button id="goldenBiscuit" class="shop-item" data-cost="1000">Golden Biscuit (1000 Cookies)</button>
-        <button id="tripleClick" class="shop-item" data-cost="150">Triple Click (150 Cookies)</button>
-        <button id="cookieDrone" class="shop-item" data-cost="200">Cookie Drone (200 Cookies)</button>
-        <button id="cookieFactory" class="shop-item" data-cost="500">Cookie Factory (500 Cookies)</button>
-        <button id="cookieBoost" class="shop-item" data-cost="300">Cookie Boost (300 Cookies)</button>
-        <button id="superClick" class="shop-item" data-cost="400">Super Click (400 Cookies)</button>
-        <button id="cookieMachine" class="shop-item" data-cost="600">Cookie Machine (600 Cookies)</button>
-        <button id="ultimateClicker" class="shop-item" data-cost="800">Ultimate Clicker (800 Cookies)</button>
-        <button id="doubleSpeed" class="shop-item" data-cost="1200">Double Speed (1200 Cookies)</button>
-        <button id="autoProduction" class="shop-item" data-cost="1500">Auto Production (1500 Cookies)</button>
-        <button id="cookieMansion" class="shop-item" data-cost="2000">Cookie Mansion (2000 Cookies)</button>
-        <button id="cookieResearch" class="shop-item" data-cost="2500">Cookie Research (2500 Cookies)</button>
-        <button id="megaBoost" class="shop-item" data-cost="3000">Mega Boost (3000 Cookies)</button>
-        <button id="cookieRobot" class="shop-item" data-cost="3500">Cookie Robot (3500 Cookies)</button>
-        <button id="doubleCookies" class="shop-item" data-cost="600">Double Cookies (600 Cookies)</button>
-        <button id="timeAccelerator" class="shop-item" data-cost="700">Time Accelerator (700 Cookies)</button>
-        <button id="cookiePrinter" class="shop-item" data-cost="800">Cookie Printer (800 Cookies)</button>
-        <button id="cookieHarvest" class="shop-item" data-cost="1000">Cookie Harvest (1000 Cookies)</button>
-        <button id="superMegaClick" class="shop-item" data-cost="1500">Super Mega Click (1500 Cookies)</button>
-        <button id="cookieStormMachine" class="shop-item" data-cost="2000">Cookie Storm Machine (2000 Cookies)</button>
-        <button id="infiniteCookies" class="shop-item" data-cost="5000">Infinite Cookies (5000 Cookies)</button>
-        <button id="cookieRocket" class="shop-item" data-cost="6000">Cookie Rocket (6000 Cookies)</button>
-        <button id="megaClicker" class="shop-item" data-cost="4000">Mega Clicker (4000 Cookies)</button>
-        <button id="hyperClick" class="shop-item" data-cost="10000">Hyper Click (10000 Cookies)</button>
+<body class="dark-mode">
+    <p id="score" class="score-container">Cookies: 0</p>
+    <img id="shopToggle" class="shop-button" src="shop-image.png" alt="Shop">
+    <div class="game-container">
+        <h1>Cookie Clicker</h1>
+        <img id="cookie" class="cookie" src="cookie-icon.png" alt="Cookie">
     </div>
+    
+    <div id="shop" class="shop-modal">
+        <h2>Shop</h2>
+        <button class="shop-item" id="autoClicker">Auto-Clicker (10 Cookies)</button>
+        <button class="shop-item" id="doubleClick">Doppelte Cookies (50 Cookies)</button>
+        <button class="shop-item" id="goldenCookie">Goldener Keks (200 Cookies)</button>
+        <button class="shop-item" id="megaClick">Mega-Klick (500 Cookies)</button>
+        <!-- 30 zusätzliche Shop Items -->
+        <button class="shop-item" id="clickMultiplier">Klick Multiplikator (100 Cookies)</button>
+        <button class="shop-item" id="cookieStorm">Keks-Sturm (250 Cookies)</button>
+        <button class="shop-item" id="cookieExplosion">Keks-Explosion (500 Cookies)</button>
+        <button class="shop-item" id="cookieRain">Keks-Regen (750 Cookies)</button>
+        <button class="shop-item" id="timeFreeze">Zeit Stopp (1000 Cookies)</button>
+        <button class="shop-item" id="cookieMagnet">Cookie Magnet (200 Cookies)</button>
+        <button class="shop-item" id="goldenBiscuit">Goldener Keks (1000 Cookies)</button>
+        <button class="shop-item" id="tripleClick">Dreifache Klicks (150 Cookies)</button>
+        <button class="shop-item" id="cookieDrone">Cookie Drohne (200 Cookies)</button>
+        <button class="shop-item" id="cookieFactory">Cookie Fabrik (500 Cookies)</button>
+        <button class="shop-item" id="cookieBoost">Keks Boost (300 Cookies)</button>
+        <button class="shop-item" id="superClick">Super Klick (400 Cookies)</button>
+        <button class="shop-item" id="cookieMachine">Cookie Maschine (600 Cookies)</button>
+        <button class="shop-item" id="ultimateClicker">Ultimative Klicker (800 Cookies)</button>
+        <button class="shop-item" id="doubleSpeed">Doppelte Geschwindigkeit (1200 Cookies)</button>
+        <button class="shop-item" id="autoProduction">Auto-Produktion (1500 Cookies)</button>
+        <button class="shop-item" id="cookieMansion">Cookie Mansion (2000 Cookies)</button>
+        <button class="shop-item" id="cookieResearch">Keks Forschung (2500 Cookies)</button>
+        <button class="shop-item" id="megaBoost">Mega Boost (3000 Cookies)</button>
+        <button class="shop-item" id="cookieRobot">Cookie Roboter (3500 Cookies)</button>
+        <button class="shop-item" id="doubleCookies">Doppelte Cookies (600 Cookies)</button>
+        <button class="shop-item" id="timeAccelerator">Zeit Beschleuniger (700 Cookies)</button>
+        <button class="shop-item" id="cookiePrinter">Cookie Drucker (800 Cookies)</button>
+        <button class="shop-item" id="cookieHarvest">Keks Ernte (1000 Cookies)</button>
+        <button class="shop-item" id="superMegaClick">Super Mega Klick (1500 Cookies)</button>
+        <button class="shop-item" id="cookieStormMachine">Keks-Sturm Maschine (2000 Cookies)</button>
+        <button class="shop-item" id="infiniteCookies">Unendliche Cookies (5000 Cookies)</button>
+        <button class="shop-item" id="cookieRocket">Cookie Rakete (6000 Cookies)</button>
+        <button class="shop-item" id="megaClicker">Mega Klicker (4000 Cookies)</button>
+        <button class="shop-item" id="hyperClick">Hyper Klick (10000 Cookies)</button>
+        <button class="shop-item close-shop" id="closeShop">Schließen</button>
+    </div>
+
+    <audio id="clickSound" src="cookie-sound.mp3"></audio>
+    <audio id="purchaseSound" src="cookie-sound.mp3"></audio>
 
     <script>
         let score = 0;
+        let autoClickerActive = false;
+        let doubleClickActive = false;
         let clickMultiplier = 1;
+        let shopVisible = false;
 
-        function addCookies() {
-            score += clickMultiplier;
-            updateScore();
-        }
+        // Get elements
+        const cookie = document.getElementById("cookie");
+        const scoreDisplay = document.getElementById("score");
+        const shopToggle = document.getElementById("shopToggle");
+        const shop = document.getElementById("shop");
+        const closeShop = document.getElementById("closeShop");
+        const autoClicker = document.getElementById("autoClicker");
+        const doubleClick = document.getElementById("doubleClick");
+        const goldenCookie = document.getElementById("goldenCookie");
+        const megaClick = document.getElementById("megaClick");
+        const clickSound = document.getElementById("clickSound");
+        const purchaseSound = document.getElementById("purchaseSound");
 
-        function updateScore() {
-            document.getElementById("score").innerText = "Cookies: " + score;
-        }
+        // Shop Items und Aktionen
+        const shopItems = [
+            { element: autoClicker, cost: 10, action: () => { autoClickerActive = true; startAutoClicker(); } },
+            { element: doubleClick, cost: 50, action: () => { doubleClickActive = true; clickMultiplier = 2; } },
+            { element: goldenCookie, cost: 200, action: () => { /* Golden Cookie Logic */ } },
+            { element: megaClick, cost: 500, action: () => { /* Mega Click Logic */ } },
+            { element: clickMultiplier, cost: 100, action: () => { clickMultiplier = 2; } },
+            { element: cookieStorm, cost: 250, action: () => { /* Cookie Storm Logic */ } },
+            { element: cookieExplosion, cost: 500, action: () => { /* Cookie Explosion Logic */ } },
+            { element: cookieRain, cost: 750, action: () => { /* Cookie Rain Logic */ } },
+            { element: timeFreeze, cost: 1000, action: () => { /* Time Freeze Logic */ } },
+            { element: cookieMagnet, cost: 200, action: () => { /* Cookie Magnet Logic */ } },
+            { element: goldenBiscuit, cost: 1000, action: () => { /* Golden Biscuit Logic */ } },
+            { element: tripleClick, cost: 150, action: () => { clickMultiplier = 3; } },
+            { element: cookieDrone, cost: 200, action: () => { /* Cookie Drone Logic */ } },
+            { element: cookieFactory, cost: 500, action: () => { /* Cookie Factory Logic */ } },
+            { element: cookieBoost, cost: 300, action: () => { /* Cookie Boost Logic */ } },
+            { element: superClick, cost: 400, action: () => { /* Super Click Logic */ } },
+            { element: cookieMachine, cost: 600, action: () => { /* Cookie Machine Logic */ } },
+            { element: ultimateClicker, cost: 800, action: () => { /* Ultimate Clicker Logic */ } },
+            { element: doubleSpeed, cost: 1200, action: () => { /* Double Speed Logic */ } },
+            { element: autoProduction, cost: 1500, action: () => { /* Auto Production Logic */ } },
+            { element: cookieMansion, cost: 2000, action: () => { /* Cookie Mansion Logic */ } },
+            { element: cookieResearch, cost: 2500, action: () => { /* Cookie Research Logic */ } },
+            { element: megaBoost, cost: 3000, action: () => { /* Mega Boost Logic */ } },
+            { element: cookieRobot, cost: 3500, action: () => { /* Cookie Robot Logic */ } },
+            { element: doubleCookies, cost: 600, action: () => { /* Double Cookies Logic */ } },
+            { element: timeAccelerator, cost: 700, action: () => { /* Time Accelerator Logic */ } },
+            { element: cookiePrinter, cost: 800, action: () => { /* Cookie Printer Logic */ } },
+            { element: cookieHarvest, cost: 1000, action: () => { /* Cookie Harvest Logic */ } },
+            { element: superMegaClick, cost: 1500, action: () => { /* Super Mega Click Logic */ } },
+            { element: cookieStormMachine, cost: 2000, action: () => { /* Cookie Storm Machine Logic */ } },
+            { element: infiniteCookies, cost: 5000, action: () => { /* Infinite Cookies Logic */ } },
+            { element: cookieRocket, cost: 6000, action: () => { /* Cookie Rocket Logic */ } },
+            { element: megaClicker, cost: 4000, action: () => { /* Mega Clicker Logic */ } },
+            { element: hyperClick, cost: 10000, action: () => { /* Hyper Click Logic */ } }
+        ];
 
-        document.querySelectorAll(".shop-item").forEach(button => {
-            button.addEventListener("click", () => {
-                let cost = parseInt(button.getAttribute("data-cost"));
-                if (score >= cost && !button.disabled) {
-                    score -= cost;
+        // Funktion zum Starten des Auto-Clickers
+        function startAutoClicker() {
+            setInterval(() => {
+                if (autoClickerActive) {
+                    score += 1 * clickMultiplier;
                     updateScore();
-                    button.disabled = true;  // Einmaliger Kauf
+                }
+            }, 1000);
+        }
+
+        // Klick auf den Cookie
+        cookie.addEventListener("click", () => {
+            score += 1 * clickMultiplier;
+            updateScore();
+            clickSound.play();
+        });
+
+        // Update der Anzeige
+        function updateScore() {
+            scoreDisplay.textContent = Cookies: ${score};
+        }
+
+        // Shop einblenden/ausblenden
+        shopToggle.addEventListener("click", () => {
+            shopVisible = !shopVisible;
+            shop.style.display = shopVisible ? "block" : "none";
+        });
+
+        closeShop.addEventListener("click", () => {
+            shopVisible = false;
+            shop.style.display = "none";
+        });
+
+        // Event-Listener für Shop-Items
+        shopItems.forEach(item => {
+            item.element.addEventListener("click", () => {
+                if (score >= item.cost && !item.element.disabled) {
+                    score -= item.cost;
+                    item.element.disabled = true;
+                    updateScore();
+                    item.action();
+                    purchaseSound.play();
                 }
             });
         });
     </script>
-
 </body>
 </html>
 
