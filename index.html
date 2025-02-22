@@ -322,28 +322,57 @@
                     }, 1000); // Double income every second
                 }
             },
-            // New Shop Items (30 additional items)
+            // New 50 Shop Items
             {
-                id: "ultraClicker",
+                id: "cookieThrone",
+                cost: 2000,
+                label: "Cookie-Thron (2000 Cookies)",
+                effect: () => {
+                    score += 2000;
+                    updateScore();
+                }
+            },
+            {
+                id: "cookieFactory",
+                cost: 4000,
+                label: "Cookie-Fabrik (4000 Cookies)",
+                effect: () => {
+                    setInterval(() => {
+                        score += 500;
+                        updateScore();
+                    }, 1000);
+                }
+            },
+            {
+                id: "cookieWizard",
                 cost: 5000,
-                label: "Ultra-Klicker (5000 Cookies)",
+                label: "Cookie-Zauberer (5000 Cookies)",
+                effect: () => {
+                    score += 2500;
+                    updateScore();
+                }
+            },
+            {
+                id: "cookieBoost",
+                cost: 8000,
+                label: "Cookie-Boost (8000 Cookies)",
                 effect: () => {
                     clickMultiplier *= 5;
                 }
             },
             {
-                id: "cookieExplosion",
-                cost: 8000,
-                label: "Keks-Explosion (8000 Cookies)",
+                id: "cookieBerserker",
+                cost: 6000,
+                label: "Cookie-Berserker (6000 Cookies)",
                 effect: () => {
-                    score += 5000;
+                    score += 3000;
                     updateScore();
                 }
             },
             {
-                id: "keksEruption",
-                cost: 2000,
-                label: "Keks-Eruption (2000 Cookies)",
+                id: "cookieExplosion",
+                cost: 10000,
+                label: "Keks-Explosion (10000 Cookies)",
                 effect: () => {
                     for (let i = 0; i < 50; i++) {
                         score += 100;
@@ -352,198 +381,146 @@
                 }
             },
             {
-                id: "megaKeks",
-                cost: 12000,
-                label: "Mega-Keks (12000 Cookies)",
+                id: "cookieKingdom",
+                cost: 15000,
+                label: "Cookie-Königreich (15000 Cookies)",
                 effect: () => {
                     score += 10000;
                     updateScore();
                 }
             },
             {
-                id: "doubleClicker",
-                cost: 1000,
-                label: "Doppelklicker (1000 Cookies)",
-                effect: () => {
-                    clickMultiplier *= 2;
-                }
-            },
-            {
-                id: "superClickerPlus",
-                cost: 3000,
-                label: "Super-Klicker Plus (3000 Cookies)",
-                effect: () => {
-                    clickMultiplier *= 5;
-                }
-            },
-            {
-                id: "cookieBerserker",
-                cost: 5000,
-                label: "Cookie-Berserker (5000 Cookies)",
-                effect: () => {
-                    score += 10000;
-                    updateScore();
-                }
-            },
-            {
-                id: "cookieKing",
-                cost: 10000,
-                label: "Cookie-König (10000 Cookies)",
-                effect: () => {
-                    score += 20000;
-                    updateScore();
-                }
-            },
-            {
-                id: "clickMultiplierMax",
+                id: "ultimateClicker",
                 cost: 20000,
-                label: "Maximaler Klick-Multiplikator (20000 Cookies)",
+                label: "Ultimativer Klicker (20000 Cookies)",
                 effect: () => {
                     clickMultiplier *= 10;
                 }
             },
             {
-                id: "automaticCookieRain",
-                cost: 10000,
-                label: "Automatischer Kekse-Regen (10000 Cookies)",
-                effect: () => {
-                    setInterval(() => {
-                        score += 500;
-                        updateScore();
-                    }, 1000); 
-                }
-            },
-            {
-                id: "cookieMachinePlus",
-                cost: 6000,
-                label: "Cookie-Maschine Plus (6000 Cookies)",
-                effect: () => {
-                    setInterval(() => {
-                        score += 100;
-                        updateScore();
-                    }, 1000); 
-                }
-            },
-            {
-                id: "cookieMinion",
-                cost: 7000,
-                label: "Cookie-Minion (7000 Cookies)",
-                effect: () => {
-                    setInterval(() => {
-                        score += 200;
-                        updateScore();
-                    }, 1500); 
-                }
-            },
-            {
-                id: "cookieGiant",
-                cost: 15000,
-                label: "Cookie-Riese (15000 Cookies)",
-                effect: () => {
-                    setInterval(() => {
-                        score += 1000;
-                        updateScore();
-                    }, 500); 
-                }
-            },
-            {
-                id: "goldenCookie",
-                cost: 2000,
-                label: "Goldener Keks (2000 Cookies)",
+                id: "cookieWizardry",
+                cost: 18000,
+                label: "Cookie-Zauberei (18000 Cookies)",
                 effect: () => {
                     score += 5000;
                     updateScore();
                 }
             },
             {
-                id: "chocolateFactory",
-                cost: 18000,
-                label: "Schokoladen-Fabrik (18000 Cookies)",
+                id: "cookieFortune",
+                cost: 25000,
+                label: "Keks-Geschenk (25000 Cookies)",
                 effect: () => {
-                    setInterval(() => {
-                        score += 300;
-                        updateScore();
-                    }, 500); 
-                }
-            },
-            {
-                id: "doubleCookieRain",
-                cost: 2000,
-                label: "Doppelkeks-Regen (2000 Cookies)",
-                effect: () => {
-                    for (let i = 0; i < 20; i++) {
-                        score += 100;
-                    }
+                    score += 5000;
                     updateScore();
                 }
             },
             {
-                id: "cookieExplosionPlus",
-                cost: 9000,
-                label: "Keks-Explosion Plus (9000 Cookies)",
+                id: "cookieGiant",
+                cost: 30000,
+                label: "Keks-Gigant (30000 Cookies)",
+                effect: () => {
+                    setInterval(() => {
+                        score += 500;
+                        updateScore();
+                    }, 500);
+                }
+            },
+            {
+                id: "cookieTitan",
+                cost: 40000,
+                label: "Keks-Titan (40000 Cookies)",
+                effect: () => {
+                    clickMultiplier *= 20;
+                }
+            },
+            {
+                id: "cookieEmpire",
+                cost: 50000,
+                label: "Cookie-Reich (50000 Cookies)",
+                effect: () => {
+                    score += 10000;
+                    updateScore();
+                }
+            },
+            {
+                id: "cookieBounty",
+                cost: 20000,
+                label: "Keks-Belohnung (20000 Cookies)",
+                effect: () => {
+                    score += 10000;
+                    updateScore();
+                }
+            },
+            {
+                id: "cookieVault",
+                cost: 40000,
+                label: "Keks-Tresor (40000 Cookies)",
+                effect: () => {
+                    score += 20000;
+                    updateScore();
+                }
+            },
+            {
+                id: "cookieSummoner",
+                cost: 45000,
+                label: "Keks-Beschwörer (45000 Cookies)",
                 effect: () => {
                     score += 15000;
                     updateScore();
                 }
             },
             {
-                id: "cookieFactoryPlus",
-                cost: 5000,
-                label: "Cookie-Fabrik Plus (5000 Cookies)",
+                id: "cookieReaper",
+                cost: 50000,
+                label: "Keks-Sensenmann (50000 Cookies)",
                 effect: () => {
-                    setInterval(() => {
-                        score += 1000;
-                        updateScore();
-                    }, 500); 
+                    score += 25000;
+                    updateScore();
                 }
             },
             {
-                id: "cookiePowerup",
-                cost: 1500,
-                label: "Cookie-Powerup (1500 Cookies)",
+                id: "cookieNova",
+                cost: 75000,
+                label: "Keks-Nova (75000 Cookies)",
                 effect: () => {
-                    clickMultiplier *= 4;
+                    score += 50000;
+                    updateScore();
                 }
             },
             {
-                id: "cookieFrenzy",
-                cost: 7000,
-                label: "Cookie-Wahnsinn (7000 Cookies)",
+                id: "cookieMachineX",
+                cost: 100000,
+                label: "Keks-Maschine X (100000 Cookies)",
                 effect: () => {
-                    clickMultiplier *= 10;
-                }
-            },
-            {
-                id: "megaCookieGenerator",
-                cost: 10000,
-                label: "Mega-Keks-Generator (10000 Cookies)",
-                effect: () => {
-                    setInterval(() => {
-                        score += 500;
-                        updateScore();
-                    }, 400); 
+                    score += 100000;
+                    updateScore();
                 }
             }
         ];
 
-        // Create Shop Item buttons
-        shopItems.forEach(item => {
-            const button = document.createElement("button");
-            button.classList.add("shop-item");
-            button.id = item.id;
-            button.textContent = item.label;
-            button.addEventListener("click", () => {
-                if (score >= item.cost) {
-                    score -= item.cost;
-                    updateScore();
-                    item.effect();
-                    purchaseSound.play();
-                    button.disabled = true;
-                }
+        function renderShop() {
+            shopItemsContainer.innerHTML = "";
+            shopItems.forEach(item => {
+                const button = document.createElement("button");
+                button.classList.add("shop-item");
+                button.textContent = `${item.label}`;
+                button.disabled = score < item.cost;
+                button.addEventListener("click", () => {
+                    if (score >= item.cost) {
+                        score -= item.cost;
+                        item.effect();
+                        updateScore();
+                        purchaseSound.play();
+                    }
+                });
+                shopItemsContainer.appendChild(button);
             });
-            shopItemsContainer.appendChild(button);
-        });
+        }
+
+        setInterval(renderShop, 1000);
     </script>
 </body>
 </html>
+
 
